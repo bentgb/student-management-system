@@ -59,8 +59,6 @@ public class StudentService {
                         "s.students u WHERE  s.name = :subjectName")
                 .setParameter("subjectName", subjectName).getSingleResult();
 
-        // Här hämtas Set med USERS från vårat hämtade ITEM
-
         return (Set<Student>) subject.getStudents();
     }
 
