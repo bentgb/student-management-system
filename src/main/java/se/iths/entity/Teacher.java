@@ -5,45 +5,39 @@ import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-
-public class Student {
-
+@ Entity
+public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @NotEmpty
     private String firstName;
-    private String lastname;
+    private String lastName;
     private String email;
-    private String phoneNumber;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.PERSIST)
     private Set<Subject> subjects = new HashSet<>();
-
-
-    public Student(@NotEmpty String firstName, @NotEmpty String lastname, @NotEmpty String email, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastname = lastname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Student() {
-
-    }
 
     public void addSubject(Subject subject) {
         subjects.add(subject);
-        subject.getStudents().add(this);
+        subject.setTeacher(this);
     }
 
     public void removeSubject(Subject subject) {
         subjects.remove(subject);
-        subject.getStudents().remove(this);
+        subject.setTeacher(null);
     }
 
+    public Teacher(@NotEmpty String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public Teacher() {
+
+    }
 
     public Long getId() {
         return id;
@@ -61,12 +55,12 @@ public class Student {
         this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -77,11 +71,8 @@ public class Student {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public Set<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 }
